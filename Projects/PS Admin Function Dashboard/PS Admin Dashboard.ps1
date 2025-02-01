@@ -3,7 +3,7 @@ Add-Type -AssemblyName System.Windows.Forms
 
 # Create the main form
 $Form = New-Object System.Windows.Forms.Form
-$Form.Text = "Admin Dashboard UI"
+$Form.Text = "IT Admin Dashboard UI"
 $Form.Size = New-Object System.Drawing.Size(500, 350)
 $Form.StartPosition = "CenterScreen"
 
@@ -11,7 +11,7 @@ $Form.StartPosition = "CenterScreen"
 $PCInfoButton = New-Object System.Windows.Forms.Button
 $PCInfoButton.Text = "Show PC Info"
 $PCInfoButton.Size = New-Object System.Drawing.Size(150, 40)
-$PCInfoButton.Location = New-Object System.Drawing.Point(200, 30)
+$PCInfoButton.Location = New-Object System.Drawing.Point(175, 30)
 $PCInfoButton.Add_Click({
     $PCInfo = Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture, BiosVersion
     [System.Windows.Forms.MessageBox]::Show(($PCInfo | Out-String), "PC Info")
@@ -22,7 +22,7 @@ $Form.Controls.Add($PCInfoButton)
 $CheckUpdatesButton = New-Object System.Windows.Forms.Button
 $CheckUpdatesButton.Text = "Check for Updates"
 $CheckUpdatesButton.Size = New-Object System.Drawing.Size(150, 40)
-$CheckUpdatesButton.Location = New-Object System.Drawing.Point(100, 80)
+$CheckUpdatesButton.Location = New-Object System.Drawing.Point(175, 80)
 $CheckUpdatesButton.Add_Click({
     try {
         Install-Module PSWindowsUpdate -Force -Scope CurrentUser
@@ -43,7 +43,7 @@ $Form.Controls.Add($CheckUpdatesButton)
 $ExitButton = New-Object System.Windows.Forms.Button
 $ExitButton.Text = "Exit"
 $ExitButton.Size = New-Object System.Drawing.Size(150, 40)
-$ExitButton.Location = New-Object System.Drawing.Point(100, 130)
+$ExitButton.Location = New-Object System.Drawing.Point(175, 130)
 $ExitButton.Add_Click({ $Form.Close() })
 $Form.Controls.Add($ExitButton)
 
