@@ -5,3 +5,5 @@ Install-WindowsUpdate -AcceptAll -AutoReboot
 
 
 #Script when tested update Windows 11 PC and BIOS
+
+#REBOOTS PC
