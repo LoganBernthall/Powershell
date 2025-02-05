@@ -20,8 +20,8 @@ $Form.Controls.Add($LblBasicFunc)
 
 # Create the Label for network functions
 $LblNetFunc = New-Object System.Windows.Forms.Label
-$LblNetFunc.Location = New-Object System.Drawing.Point(100, 40)
-$LblNetFunc.Size = New-Object System.Drawing.Size(180, 30)  # Adjusted height for text visibility
+$LblNetFunc.Location = New-Object System.Drawing.Point(250, 10)
+$LblNetFunc.Size = New-Object System.Drawing.Size(220, 30)  # Adjusted height for text visibility
 $LblNetFunc.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
 $LblNetFunc.Text = "Network Functions:"
 
@@ -75,15 +75,26 @@ $PasswordGeneratorButton.Add_Click({
 
 }) 
     
+###########################################Network Diagnostic Buttons
+$NetworkGetIPEtcButton = New-Object System.Windows.Forms.Button
+$NetworkGetIPEtcButton.Text = "Network Configuration"
+$NetworkGetIPEtcButton.Size = New-Object System.Drawing.Size(150, 40)
+$NetworkGetIPEtcButton.Location = New-Object System.Drawing.Point(200, 40)
+$NetworkGetIPEtcButton.Add_Click({
+    
+    $NetConf = Get-NetIPConfiguration | Select-Object InterfaceAlias, IPv4Address, IPv6Address, DNSServer, InterfaceDescription, @{Name="Gateway";Expression={$_.IPv4DefaultGateway}}, @{Name="MACAddress";Expression={(Get-NetAdapter -InterfaceIndex $_.InterfaceIndex).MacAddress}}
 
+    [System.Windows.Forms.MessageBox]::Show(($NetConf | Out-String), "Network Configuration")
 
-$Form.Controls.Add($PasswordGeneratorButton)
+}) 
+
+$Form.Controls.Add($NetworkGetIPEtcButton)
 
 # Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
 $ExitButton.Text = "Exit"
 $ExitButton.Size = New-Object System.Drawing.Size(150, 40)
-$ExitButton.Location = New-Object System.Drawing.Point(20, 200)
+$ExitButton.Location = New-Object System.Drawing.Point(175, 220)
 $ExitButton.Add_Click({ $Form.Close() })
 $Form.Controls.Add($ExitButton)
 
