@@ -41,11 +41,21 @@ $Form.Controls.Add($CheckUpdatesButton)
 
 #Button for creating a randomised password generator
 
+#Password generator button
+$PasswordGeneratorButton = New-Object System.Windows.Forms.Button
+$PasswordGeneratorButton.Text = "Create A User Password"
+$PasswordGeneratorButton.Size = New-Object System.Drawing.Size(150, 60)
+$PasswordGeneratorButton.Location = New-Object System.Drawing.Point(175, 130)
+
+$Form.Controls.Add($PasswordGeneratorButton){
+    
+}
+
 # Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
 $ExitButton.Text = "Exit"
 $ExitButton.Size = New-Object System.Drawing.Size(150, 40)
-$ExitButton.Location = New-Object System.Drawing.Point(175, 130)
+$ExitButton.Location = New-Object System.Drawing.Point(200, 130)
 $ExitButton.Add_Click({ $Form.Close() })
 $Form.Controls.Add($ExitButton)
 
