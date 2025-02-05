@@ -39,6 +39,8 @@ $CheckUpdatesButton.Add_Click({
 })
 $Form.Controls.Add($CheckUpdatesButton)
 
+#Button for creating a randomised password generator
+
 # Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
 $ExitButton.Text = "Exit"
