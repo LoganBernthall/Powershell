@@ -90,7 +90,7 @@ $NetworkGetIPEtcButton.Add_Click({
 
 $Form.Controls.Add($NetworkGetIPEtcButton)
 
-# Create an Exit button
+############################## Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
 $ExitButton.Text = "Exit"
 $ExitButton.Size = New-Object System.Drawing.Size(150, 40)
