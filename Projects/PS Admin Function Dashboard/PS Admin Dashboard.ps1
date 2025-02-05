@@ -44,18 +44,24 @@ $Form.Controls.Add($CheckUpdatesButton)
 #Password generator button
 $PasswordGeneratorButton = New-Object System.Windows.Forms.Button
 $PasswordGeneratorButton.Text = "Create A User Password"
-$PasswordGeneratorButton.Size = New-Object System.Drawing.Size(150, 60)
+$PasswordGeneratorButton.Size = New-Object System.Drawing.Size(150, 40)
 $PasswordGeneratorButton.Location = New-Object System.Drawing.Point(175, 130)
-
-$Form.Controls.Add($PasswordGeneratorButton){
+$PasswordGeneratorButton.Add_Click({
     
-}
+    $Password = -join ((33..126) | Get-Random -Count 18 | ForEach-Object {[char]$_})    #Generate randomm password stored in a variable
+    [System.Windows.Forms.MessageBox]::Show(($Password | Out-String), "Password Generator")
+
+}) 
+    
+
+
+$Form.Controls.Add($PasswordGeneratorButton)
 
 # Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
 $ExitButton.Text = "Exit"
 $ExitButton.Size = New-Object System.Drawing.Size(150, 40)
-$ExitButton.Location = New-Object System.Drawing.Point(200, 130)
+$ExitButton.Location = New-Object System.Drawing.Point(175, 180)
 $ExitButton.Add_Click({ $Form.Close() })
 $Form.Controls.Add($ExitButton)
 
