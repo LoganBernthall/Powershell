@@ -79,7 +79,7 @@ $PasswordGeneratorButton.Add_Click({
 $NetworkGetIPEtcButton = New-Object System.Windows.Forms.Button
 $NetworkGetIPEtcButton.Text = "Network Configuration"
 $NetworkGetIPEtcButton.Size = New-Object System.Drawing.Size(150, 40)
-$NetworkGetIPEtcButton.Location = New-Object System.Drawing.Point(200, 50)
+$NetworkGetIPEtcButton.Location = New-Object System.Drawing.Point(270, 50)
 $NetworkGetIPEtcButton.Add_Click({
     
     $NetConf = Get-NetIPConfiguration | Select-Object InterfaceAlias, IPv4Address, IPv6Address, DNSServer, InterfaceDescription, @{Name="Gateway";Expression={$_.IPv4DefaultGateway}}, @{Name="MACAddress";Expression={(Get-NetAdapter -InterfaceIndex $_.InterfaceIndex).MacAddress}}
@@ -89,6 +89,19 @@ $NetworkGetIPEtcButton.Add_Click({
 }) 
 
 $Form.Controls.Add($NetworkGetIPEtcButton)
+
+############################################Flush DNS Cache And Restart DNS Service
+$NetworkDNSButton =  New-Object System.Windows.Forms.Button
+$NetworkDNSButton.Text = "Flush DNS/Service"
+$NetworkDNSButton.Size = New-Object System.Drawing.Size(150, 40)
+$NetworkDNSButton.Location = New-Object System.Drawing.Point(270, 100)
+$NetworkDNSButton.Add_Click({
+    Restart-Service -Name Dnscache -Force
+    Clear-DnsClientCache
+    [System.Windows.Forms.MessageBox]::Show(("DNS Service restarts, cache cleared" | Out-String), "DNS")
+})
+
+$Form.Controls.Add($NetworkDNSButton)
 
 ############################## Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
