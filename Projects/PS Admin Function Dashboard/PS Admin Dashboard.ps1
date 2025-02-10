@@ -98,10 +98,22 @@ $NetworkDNSButton.Location = New-Object System.Drawing.Point(270, 100)
 $NetworkDNSButton.Add_Click({
     Restart-Service -Name Dnscache -Force
     Clear-DnsClientCache
-    [System.Windows.Forms.MessageBox]::Show(("DNS Service restarts, cache cleared" | Out-String), "DNS")
+    [System.Windows.Forms.MessageBox]::Show(("DNS Service restarted, cache cleared" | Out-String), "DNS")
 })
 
 $Form.Controls.Add($NetworkDNSButton)
+
+#########################################GPUPDATE Button
+$GPUPDATEButton =  New-Object System.Windows.Forms.Button
+$GPUPDATEButton.Text = "GPUPDATE"
+$GPUPDATEButton.Size = New-Object System.Drawing.Size(150, 40)
+$GPUPDATEButton.Location = New-Object System.Drawing.Point(270, 150)
+$GPUPDATEButton.Add_Click({
+        gpupdate /force
+        [System.Windows.Forms.MessageBox]::Show(("GPUPDATE Complete" | Out-String), "GPUPDATE")
+})
+
+$Form.Controls.Add($GPUPDATEButton)
 
 ############################## Create an Exit button
 $ExitButton = New-Object System.Windows.Forms.Button
