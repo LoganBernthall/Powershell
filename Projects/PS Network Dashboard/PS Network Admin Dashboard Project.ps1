@@ -34,7 +34,7 @@ $Form.Controls.Add($GetNetConfigButton)
 
 #Create button to perform GPUPDATE
 $GetGPUPDATE = New-Object System.Windows.Forms.Button
-$GetGPUPDATE.Text = "Show Network Configuration"
+$GetGPUPDATE.Text = "GPUPDATE"
 $GetGPUPDATE.Size = New-Object System.Drawing.Size(150, 40)
 $GetGPUPDATE.Location = New-Object System.Drawing.Point(15, 100)
 $GetGPUPDATE.Add_Click({
