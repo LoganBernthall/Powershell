@@ -21,7 +21,7 @@ $LblBasicFunc.Text = "Basic Functions:"
 # Add the Label to the Form
 $Form.Controls.Add($LblBasicFunc)
 
-#Create buttonb for retrieving network configuration
+#Create buttonn for retrieving network configuration
 $GetNetConfigButton = New-Object System.Windows.Forms.Button
 $GetNetConfigButton.Text = "Show Network Configuration"
 $GetNetConfigButton.Size = New-Object System.Drawing.Size(150, 40)
@@ -31,6 +31,20 @@ $GetNetConfigButton.Add_Click({
     [System.Windows.Forms.MessageBox]::Show(($NetConf | Out-String), "Network Configuration")
 })
 $Form.Controls.Add($GetNetConfigButton)
+
+#Create button to perform GPUPDATE
+$GetGPUPDATE = New-Object System.Windows.Forms.Button
+$GetGPUPDATE.Text = "Show Network Configuration"
+$GetGPUPDATE.Size = New-Object System.Drawing.Size(150, 40)
+$GetGPUPDATE.Location = New-Object System.Drawing.Point(15, 100)
+$GetGPUPDATE.Add_Click({
+    gpupdate /force
+    [System.Windows.Forms.MessageBox]::Show(("GPUPDATE Complete" | Out-String), "GPUPDATE")
+})
+$Form.Controls.Add($GetGPUPDATE)
+
+
+#############################Chart#################################
 
 #Network chart
 $chart = New-Object System.Windows.Forms.DataVisualization.Charting.Chart
