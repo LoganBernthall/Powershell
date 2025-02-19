@@ -43,6 +43,16 @@ $GetGPUPDATE.Add_Click({
 })
 $Form.Controls.Add($GetGPUPDATE)
 
+#Ping Google.com
+$GetPingGoog = New-Object System.Windows.Forms.Button
+$GetPingGoog.Text = "Ping Google"
+$GetPingGoog.Size = New-Object System.Drawing.Size(150, 40)
+$GetPingGoog.Location = New-Object System.Drawing.Point(15, 150)
+$GetPingGoog.Add_Click({
+    $NetTest = Test-Connection -ComputerName google.com -Count 4
+    [System.Windows.Forms.MessageBox]::Show(($NetTest | Out-String), "GPUPDATE")
+})
+$Form.Controls.Add($GetPingGoog)
 
 #############################Chart#################################
 
