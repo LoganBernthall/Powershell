@@ -68,7 +68,7 @@ $Form.Controls.Add($GetFlushDNS)
 
 #############################Chart#################################
 
-#Network chart
+# Network chart
 $chart = New-Object System.Windows.Forms.DataVisualization.Charting.Chart
 $chart.Width = 550
 $chart.Height = 300
@@ -77,36 +77,33 @@ $chart.Top = $form.ClientSize.Height - $chart.Height - 20
 
 # Set chart background to white for better visibility
 $chart.BackColor = [System.Drawing.Color]::White
-$chartArea.BackColor = [System.Drawing.Color]::White
 
 # Create chart area
 $chartArea = New-Object System.Windows.Forms.DataVisualization.Charting.ChartArea
+$chartArea.BackColor = [System.Drawing.Color]::White
 $chart.ChartAreas.Add($chartArea)
 
-# Add initial dummy data point to prevent empty graph
-$initialTime = [DateTime]::Now.ToOADate()
-$series.Points.AddXY($initialTime, 0)
-
-# Ensure the chart updates correctly
-$chartArea.AxisX.Minimum = $initialTime  # Start from current time
-$chartArea.AxisX.LabelStyle.Format = "HH:mm:ss"  # Display time on X-axis
+# Configure chart area
+$chartArea.AxisX.LabelStyle.Format = "HH:mm:ss"
 $chartArea.AxisX.IntervalType = [System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType]::Seconds
 $chartArea.AxisX.Interval = 1
 $chartArea.AxisY.Minimum = 0
-$chartArea.AxisY.Interval = 50  # Adjust based on expected network usage
-
-# Configure chart area
-$chartArea.AxisX.Interval = 5
+$chartArea.AxisY.Interval = 50  
 $chartArea.AxisX.MajorGrid.LineColor = [System.Drawing.Color]::LightGray
 $chartArea.AxisY.MajorGrid.LineColor = [System.Drawing.Color]::LightGray
-$chartArea.AxisY.Minimum = 0  # Ensures graph starts at 0
 
 # Create the series
 $series = New-Object System.Windows.Forms.DataVisualization.Charting.Series
 $series.ChartType = [System.Windows.Forms.DataVisualization.Charting.SeriesChartType]::Line
 $series.Name = "Network Usage"
 $series.XValueType = [System.Windows.Forms.DataVisualization.Charting.ChartValueType]::Time
+$series.Color = [System.Drawing.Color]::Blue  # Set color for visibility
+$series.BorderWidth = 2  # Increase line width for better visibility
 $chart.Series.Add($series)
+
+# Add an initial dummy data point **AFTER** series is created
+$initialTime = [DateTime]::Now.ToOADate()
+$series.Points.AddXY($initialTime, 0)
 
 # Ensure the chart position updates when form resizes
 $form.Add_Resize({
@@ -149,7 +146,6 @@ $timer.Add_Tick({
 
 # Start updating
 $timer.Start()
-
 
 #Show The Form
 $Form.ShowDialog()
