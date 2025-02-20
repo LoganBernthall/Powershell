@@ -54,6 +54,18 @@ $GetPingGoog.Add_Click({
 })
 $Form.Controls.Add($GetPingGoog)
 
+#Flush DNS
+$GetFlushDNS = New-Object System.Windows.Forms.Button
+$GetFlushDNS.Text = "Flush DNS"
+$GetFlushDNS.Size = New-Object System.Drawing.Size(150, 40)
+$GetFlushDNS.Location = New-Object System.Drawing.Point(15, 200)
+$GetFlushDNS.Add_Click({
+    $DNSFlush = ipconfig /flushdns
+    [System.Windows.Forms.MessageBox]::Show(($DNSFlush | Out-String), "DNS Flush")
+})
+$Form.Controls.Add($GetFlushDNS)
+
+
 #############################Chart#################################
 
 #Network chart
