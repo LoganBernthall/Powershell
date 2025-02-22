@@ -4,6 +4,7 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.Windows.Forms.DataVisualization
+Add-Type -AssemblyName Microsoft.VisualBasic
 
 #Create Form Base
 $Form = New-Object System.Windows.Forms.Form
@@ -70,7 +71,7 @@ $Form.Controls.Add($GetFlushDNS)
 # Create the Label for advanced functions
 $LblAdvancedFunc = New-Object System.Windows.Forms.Label
 $LblAdvancedFunc.Location = New-Object System.Drawing.Point(250, 10)
-$LblAdvancedFunc.Size = New-Object System.Drawing.Size(300, 90)  # Adjusted height for text visibility
+$LblAdvancedFunc.Size = New-Object System.Drawing.Size(300, 30)  # Adjusted height for text visibility
 $LblAdvancedFunc.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
 $LblAdvancedFunc.Text = "Advanced Functions:"
 
@@ -78,6 +79,38 @@ $LblAdvancedFunc.Text = "Advanced Functions:"
 $Form.Controls.Add($LblAdvancedFunc)
 
 #Port Sniffer 
+$PortSniff = New-Object System.Windows.Forms.Button
+$PortSniff.Text = "Port Sniffer"
+$PortSniff.Size = New-Object System.Drawing.Size(150, 40)
+$PortSniff.Location = New-Object System.Drawing.Point(250, 50)
+$PortSniff.Add_Click({
+    $IP = [Microsoft.VisualBasic.Interaction]::InputBox("Enter IP Address:", "IP Address Input", "")
+    # Define target IP and port range
+    $StartPort = 1
+    $EndPort = 1024
+
+    # Function to check open ports
+    function Test-Port {
+        param ($ip, $port)
+        try {
+            $tcp = New-Object System.Net.Sockets.TcpClient
+            $tcp.Connect($ip, $port)
+            if ($tcp.Connected) {
+                Write-Output "Open Port: $port"
+                $tcp.Close()
+            }
+        } catch {
+            # Port is closed or filtered, do nothing
+        }
+    }
+
+    # Scan the port range
+    #Write-Output "Scanning $IP for open ports..."
+    #$StartPort..$EndPort | ForEach-Object { Test-Port -ip $IP -port $_ }
+    #Write-Output "Scan complete."
+    [System.Windows.Forms.MessageBox]::Show(($port | Out-String), "Open Port")
+})
+$Form.Controls.Add($PortSniff)
 
 #############################Chart#################################
 
