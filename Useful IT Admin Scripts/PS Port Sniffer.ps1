@@ -1,5 +1,5 @@
 # Define target IP and port range
-$TargetIP = "8.8.8.8"
+$TargetIP = "192.168.0.75"
 $StartPort = 1
 $EndPort = 1024
 

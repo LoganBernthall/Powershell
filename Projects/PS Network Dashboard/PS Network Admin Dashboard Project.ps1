@@ -65,6 +65,19 @@ $GetFlushDNS.Add_Click({
 })
 $Form.Controls.Add($GetFlushDNS)
 
+#####################################################################Advanced Functions
+
+# Create the Label for advanced functions
+$LblAdvancedFunc = New-Object System.Windows.Forms.Label
+$LblAdvancedFunc.Location = New-Object System.Drawing.Point(250, 10)
+$LblAdvancedFunc.Size = New-Object System.Drawing.Size(300, 90)  # Adjusted height for text visibility
+$LblAdvancedFunc.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
+$LblAdvancedFunc.Text = "Advanced Functions:"
+
+# Add the Label to the Form
+$Form.Controls.Add($LblAdvancedFunc)
+
+#Port Sniffer 
 
 #############################Chart#################################
 
