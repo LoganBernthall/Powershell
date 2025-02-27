@@ -131,6 +131,18 @@ $EnableButton.Add_Click({
 })
 $form.Controls.Add($EnableButton)
 
+#Disable Button For Listbox
+$DisableButton = New-Object System.Windows.Forms.Button
+$DisableButton.Text = "Disable Rule"
+$DisableButton.Location = New-Object System.Drawing.Point(600, 45)
+$DisableButton.Add_Click({
+    if ($FirewallList.SelectedItem) {
+        Set-NetFirewallRule -DisplayName $FirewallList.SelectedItem -Enabled False
+        [System.Windows.Forms.MessageBox]::Show("Disabled: $($FirewallList.SelectedItem)", "Firewall Manager")
+    }
+})
+$form.Controls.Add($DisableButton)
+
 $ManageFirewall = New-Object System.Windows.Forms.Button
 $ManageFirewall.Text = "Firewall Manager"
 $ManageFirewall.Size = New-Object System.Drawing.Size(150, 40)
