@@ -98,6 +98,7 @@ $PortSniff.Add_Click({
             if ($tcp.Connected) {
                 Write-Output "Open Port: $port"
                 $tcp.Close()
+                [System.Windows.Forms.MessageBox]::Show(($port | Out-String), "Open Port")
             }
         } catch {
             # Port is closed or filtered, do nothing
@@ -108,7 +109,7 @@ $PortSniff.Add_Click({
     #Write-Output "Scanning $IP for open ports..."
     #$StartPort..$EndPort | ForEach-Object { Test-Port -ip $IP -port $_ }
     #Write-Output "Scan complete."
-    [System.Windows.Forms.MessageBox]::Show(($port | Out-String), "Open Port")
+    
 })
 $Form.Controls.Add($PortSniff)
 
