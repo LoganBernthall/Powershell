@@ -113,6 +113,35 @@ $PortSniff.Add_Click({
 })
 $Form.Controls.Add($PortSniff)
 
+#Manage Inbound Firewall Rules
+$FirewallList = New-Object System.Windows.Forms.ListBox
+$FirewallList.Location = New-Object System.Drawing.Point(500, 70)
+$FirewallList.Size = New-Object System.Drawing.Size(440, 200)
+$form.Controls.Add($FirewallList)
+
+#Enable Button For Listbox
+$EnableButton = New-Object System.Windows.Forms.Button
+$EnableButton.Text = "Enable Rule"
+$EnableButton.Location = New-Object System.Drawing.Point(500, 45)
+$EnableButton.Add_Click({
+    if ($FirewallList.SelectedItem) {
+        Set-NetFirewallRule -DisplayName $FirewallList.SelectedItem -Enabled True
+        [System.Windows.Forms.MessageBox]::Show("Enabled: $($FirewallList.SelectedItem)", "Firewall Manager")
+    }
+})
+$form.Controls.Add($EnableButton)
+
+$ManageFirewall = New-Object System.Windows.Forms.Button
+$ManageFirewall.Text = "Firewall Manager"
+$ManageFirewall.Size = New-Object System.Drawing.Size(150, 40)
+$ManageFirewall.Location = New-Object System.Drawing.Point(250, 100)
+$ManageFirewall.Add_Click({ 
+    $FirewallList.Items.Clear()
+    $Rules = Get-NetFirewallRule -Direction Inbound | Select-Object -ExpandProperty DisplayName
+    $rules | ForEach-Object { $FirewallList.Items.Add($_) }
+})
+
+$Form.Controls.Add($ManageFirewall)
 #############################Chart#################################
 
 # Network chart
