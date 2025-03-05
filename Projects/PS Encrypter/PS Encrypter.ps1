@@ -10,15 +10,39 @@ $Form.Text = "PSGen"
 $Form.Size = New-Object System.Drawing.Size(600, 500)
 $Form.StartPosition = "CenterScreen"
 
-#Create Title
+#Create Label
 $LblTitlePSGen = New-Object System.Windows.Forms.Label
-$LblTitlePSGen.Location = New-Object System.Drawing.Point(5, 10)
+$LblTitlePSGen.Location = New-Object System.Drawing.Point(250, 10)
 $LblTitlePSGen.Size = New-Object System.Drawing.Size(180, 30) 
 $LblTitlePSGen.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
 $LblTitlePSGen.Text = "PSGen!"
 
 #Add Label to the Form
 $Form.Controls.Add($LblTitlePSGen)
+
+#Create Label for 2048 RSA Encryption
+$LblRSA2048PSGen = New-Object System.Windows.Forms.Label
+$LblRSA2048PSGen.Location = New-Object System.Drawing.Point(20,40)
+$LblRSA2048PSGen.Size = New-Object System.Drawing.Size(250, 30) 
+$LblRSA2048PSGen.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
+$LblRSA2048PSGen.Text = "RSA 2048 Encryption"
+
+#Add Label to the Form
+$Form.Controls.Add($LblRSA2048PSGen)
+
+#Create RSA Button for public key encryption
+$BtnCrtPubRSA2048 = New-Object System.Windows.Forms.Button
+$BtnCrtPubRSA2048.Text = "Create Public Key"
+$BtnCrtPubRSA2048.Size = New-Object System.Drawing.Size(150, 40)
+$BtnCrtPubRSA2048.Location = New-Object System.Drawing.Point(25, 70)
+$BtnCrtPubRSA2048.Add_Click({
+    # Generate RSA Keys
+    $RSA = New-Object System.Security.Cryptography.RSACryptoServiceProvider(2048)
+    $PublicKey = $RSA.ToXmlString($false) 
+})
+
+#Add Label to the Form
+$Form.Controls.Add($BtnCrtPubRSA2048)
 
 #Show The Form
 $Form.ShowDialog()
