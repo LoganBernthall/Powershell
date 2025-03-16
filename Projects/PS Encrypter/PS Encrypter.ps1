@@ -32,13 +32,27 @@ $Form.Controls.Add($LblRSA2048PSGen)
 
 #Create RSA Button for public key encryption
 $BtnCrtPubRSA2048 = New-Object System.Windows.Forms.Button
-$BtnCrtPubRSA2048.Text = "Create Public Key"
+$BtnCrtPubRSA2048.Text = "Create Keys"
 $BtnCrtPubRSA2048.Size = New-Object System.Drawing.Size(150, 40)
 $BtnCrtPubRSA2048.Location = New-Object System.Drawing.Point(25, 70)
 $BtnCrtPubRSA2048.Add_Click({
+
     # Generate RSA Keys
     $RSA = New-Object System.Security.Cryptography.RSACryptoServiceProvider(2048)
-    $PublicKey = $RSA.ToXmlString($false) 
+    $PublicKey = $RSA.ToXmlString($false)  # Public Key (no private details)
+    $PrivateKey = $RSA.ToXmlString($true)  # Private Key (includes full key)
+    
+    # Correct file paths (Downloads folder)
+    $PrivateKeyPath = "$env:USERPROFILE\Downloads\PrivateKey.xml"
+    $PublicKeyPath = "$env:USERPROFILE\Downloads\PublicKey.xml"
+    
+    # Save Keys
+    $PublicKey | Out-File $PublicKeyPath
+    $PrivateKey | Out-File $PrivateKeyPath
+    
+    # Show Confirmation Message Box
+    [System.Windows.Forms.MessageBox]::Show("Keys have been saved to:`n$PublicKeyPath`n$PrivateKeyPath", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+    
 })
 
 #Add Label to the Form
