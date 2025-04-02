@@ -21,33 +21,57 @@ function SuccessIndicator {
 
 #Save functionality - Intially going to add save functionality in each button but that is cumbersome
 #Innovating save functionality into a callable function
-function SaveFunctionality{
-
-    #Parameters
-    param
-    (
+function SaveFunctionality {
+    param (
         [string]$FileSavePath,
-        [string]$FileSaveType
+        [string]$FileSaveType,
+        [string]$PublicKey,
+        [string]$PrivateKey
     )
 
-    #Function do
-    $SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
-    $SaveFileDialog.Title = $title
-    $SaveFileDialog.Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*"
-    $SaveFileDialog.FileName = $defaultName
+    function Get-SaveFilePath {
+        param (
+            [string]$title,
+            [string]$defaultName
+        )
 
-    if ($SaveFileDialog.ShowDialog() -eq "OK") {
-        return $SaveFileDialog.FileName
-    } else {
-        return $null
+        $SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
+        $SaveFileDialog.Title = $title
+        $SaveFileDialog.Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*"
+        $SaveFileDialog.FileName = $defaultName
+
+        if ($SaveFileDialog.ShowDialog() -eq "OK") {
+            return $SaveFileDialog.FileName
+        } else {
+            return $null
+        }
     }
 
-
     # Get save locations from user
-    $PublicKeyPath = Get-SaveFilePath "Save Public Key As" "PublicKey.xml"
-    $PrivateKeyPath = Get-SaveFilePath "Save Private Key As" "PrivateKey.xml"
+    $PublicKeyPath = Get-SaveFilePath -title "Save Public Key As" -defaultName "PublicKey.xml"
+    $PrivateKeyPath = Get-SaveFilePath -title "Save Private Key As" -defaultName "PrivateKey.xml"
 
+    if ($PublicKeyPath -and $PrivateKeyPath) {
+        $PublicKey | Out-File -FilePath $PublicKeyPath -Encoding UTF8
+        $PrivateKey | Out-File -FilePath $PrivateKeyPath -Encoding UTF8
+
+        [System.Windows.Forms.MessageBox]::Show(
+            "Keys saved to:`n$PublicKeyPath`n$PrivateKeyPath",
+            "Confirmation",
+            [System.Windows.Forms.MessageBoxButtons]::OK,
+            [System.Windows.Forms.MessageBoxIcon]::Information
+        )
+    } else {
+        [System.Windows.Forms.MessageBox]::Show(
+            "Key generation canceled.",
+            "Canceled",
+            [System.Windows.Forms.MessageBoxButtons]::OK,
+            [System.Windows.Forms.MessageBoxIcon]::Warning
+        )
+    }
 }
+
+
 
 ################################################################################
 
@@ -89,37 +113,9 @@ $BtnCrtPubRSA2048.Add_Click({
     $PublicKey = $RSA.ToXmlString($false)  # Public Key (no private details)
     $PrivateKey = $RSA.ToXmlString($true)  # Private Key (includes full key)
 
-    # Function to open Save File Dialog
-    function Get-SaveFilePath($title, $defaultName) {
-        $SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
-        $SaveFileDialog.Title = $title
-        $SaveFileDialog.Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*"
-        $SaveFileDialog.FileName = $defaultName
-
-        if ($SaveFileDialog.ShowDialog() -eq "OK") {
-            return $SaveFileDialog.FileName
-        } else {
-            return $null
-        }
-    }
-
-    # Get save locations from user
-    $PublicKeyPath = Get-SaveFilePath "Save Public Key As" "PublicKey.xml"
-    $PrivateKeyPath = Get-SaveFilePath "Save Private Key As" "PrivateKey.xml"
-
-    # Only save if user selected a path
-    if ($PublicKeyPath -and $PrivateKeyPath) {
-        # Save Keys
-        $PublicKey | Out-File $PublicKeyPath
-        $PrivateKey | Out-File $PrivateKeyPath
-
-        # Show Confirmation Message Box
-        [System.Windows.Forms.MessageBox]::Show("Keys have been saved to:`n$PublicKeyPath`n$PrivateKeyPath", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
-    } else {
-        # User canceled save dialog
-        [System.Windows.Forms.MessageBox]::Show("Key generation canceled.", "Canceled", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Warning)
-    }
-
+     # Function to open Save File Dialog
+    
+    SaveFunctionality -PublicKey $PublicKey -PrivateKey $PrivateKey 
     SuccessIndicator -Task "RSA"
 })
 
@@ -147,15 +143,12 @@ $BtnCrtAES.Add_Click({
     $AES = [System.Security.Cryptography.Aes]::Create()
     $AES.KeySize = 256  # Set key size to 256 bits (32 bytes)
     $AES.GenerateKey()  # Explicitly generate a random key
-
+    
     # Convert the key to Base64 for easy storage/display
     $Base64Key = [Convert]::ToBase64String($AES.Key)
 
-    #Output 
-    $Base64Key
-
-    [System.Windows.Forms.MessageBox]::Show("AES Key (Base64): $Base64Key", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
-
+    #[System.Windows.Forms.MessageBox]::Show("AES Key (Base64): $Base64Key", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+    SaveFunctionality -FileSavePath "AESKey.txt" -FileSaveType ".txt" -PublicKey $Base64Key -PrivateKey ""
     SuccessIndicator -Task "AES"
 })
 
