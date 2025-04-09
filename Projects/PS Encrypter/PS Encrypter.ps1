@@ -4,6 +4,9 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+#Pre-Req Variables
+$global:PubVal = ""
+
 #####################################Function Define Zone
 
 #Success Indicator to show task completed
@@ -122,7 +125,7 @@ $BtnCrtPubRSA2048.Add_Click({
 # Add Button to the Form
 $Form.Controls.Add($BtnCrtPubRSA2048)
 
-#Create label for Secure Strings (Windows DPAPI)
+#Create label for Secure Strings (AES)
 $LblAES = New-Object System.Windows.Forms.Label
 $LblAES.Location = New-Object System.Drawing.Point(20,120)
 $LblAES.Size = New-Object System.Drawing.Size(250, 22) 
@@ -150,10 +153,32 @@ $BtnCrtAES.Add_Click({
     #[System.Windows.Forms.MessageBox]::Show("AES Key (Base64): $Base64Key", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
     SaveFunctionality -FileSavePath "AESKey.txt" -FileSaveType ".txt" -PublicKey $Base64Key -PrivateKey ""
     SuccessIndicator -Task "AES"
+
+    $PubVal = $PubVal + $AES
 })
+
 
 # Add Button to the Form
 $Form.Controls.Add($BtnCrtAES)
 
+# Create a label for a textbox to display the encryption key in (PUBLIC ONLY)
+$LblEcnPubTxt = New-Object System.Windows.Forms.Label
+$LblEcnPubTxt.Location = New-Object System.Drawing.Point(20,200)
+$LblEcnPubTxt.Size = New-Object System.Drawing.Size(250, 50) 
+$LblEcnPubTxt.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
+$LblEcnPubTxt.Text = "Public Key Pasteboard:"
+
+# Add Label to the Form
+$Form.Controls.Add($LblEcnPubTxt)
+
+# Create a textbox to display the encryption key in (PUBLIC ONLY)
+$TbEcnPubTxt = New-Object System.Windows.Forms.TextBox
+$TbEcnPubTxt.Location = New-Object System.Drawing.Point(20, 250)
+$TbEcnPubTxt.Size = New-Object System.Drawing.Size(500, 500)
+$TbEcnPubTxt.ReadOnly = $true
+$TbEcnPubTxt.Text = $PubVal
+
+#Add Textbox to form
+$form.Controls.Add($TbEcnPubTxt)
 # Show The Form
 $Form.ShowDialog()
