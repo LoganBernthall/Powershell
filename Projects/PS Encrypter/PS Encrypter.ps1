@@ -120,6 +120,11 @@ $BtnCrtPubRSA2048.Add_Click({
     
     SaveFunctionality -PublicKey $PublicKey -PrivateKey $PrivateKey 
     SuccessIndicator -Task "RSA"
+
+    
+    # Update the global variable and textbox
+    $global:PubVal = $PublicKey
+    $TbEcnPubTxt.Text = $global:PubVal
 })
 
 # Add Button to the Form
@@ -142,19 +147,21 @@ $BtnCrtAES.Size = New-Object System.Drawing.Size(150, 40)
 $BtnCrtAES.Location = New-Object System.Drawing.Point(25, 140)
 $BtnCrtAES.Add_Click({ 
    
-    # Create an AES object
+    # Generate the AES key
     $AES = [System.Security.Cryptography.Aes]::Create()
-    $AES.KeySize = 256  # Set key size to 256 bits (32 bytes)
-    $AES.GenerateKey()  # Explicitly generate a random key
-    
-    # Convert the key to Base64 for easy storage/display
+    $AES.KeySize = 256
+    $AES.GenerateKey()
+
+    # Convert the key to Base64
     $Base64Key = [Convert]::ToBase64String($AES.Key)
 
-    #[System.Windows.Forms.MessageBox]::Show("AES Key (Base64): $Base64Key", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+    # Save the key
     SaveFunctionality -FileSavePath "AESKey.txt" -FileSaveType ".txt" -PublicKey $Base64Key -PrivateKey ""
     SuccessIndicator -Task "AES"
 
-    $PubVal = $PubVal + $AES
+    # Update the global variable and textbox
+    $global:PubVal = $Base64Key
+    $TbEcnPubTxt.Text = $global:PubVal
 })
 
 
@@ -174,7 +181,7 @@ $Form.Controls.Add($LblEcnPubTxt)
 # Create a textbox to display the encryption key in (PUBLIC ONLY)
 $TbEcnPubTxt = New-Object System.Windows.Forms.TextBox
 $TbEcnPubTxt.Location = New-Object System.Drawing.Point(20, 250)
-$TbEcnPubTxt.Size = New-Object System.Drawing.Size(500, 500)
+$TbEcnPubTxt.Size = New-Object System.Drawing.Size(500, 750)
 $TbEcnPubTxt.ReadOnly = $true
 $TbEcnPubTxt.Text = $PubVal
 
