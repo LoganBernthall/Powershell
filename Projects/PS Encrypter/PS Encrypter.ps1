@@ -140,7 +140,7 @@ $LblAES.Text = "AES Encryption:"
 # Add Label to the Form
 $Form.Controls.Add($LblAES)
 
-# Create RSA Button for public key encryption
+# Create AES Button for public key encryption
 $BtnCrtAES = New-Object System.Windows.Forms.Button
 $BtnCrtAES.Text = "Create Keys"
 $BtnCrtAES.Size = New-Object System.Drawing.Size(150, 40)
@@ -177,6 +177,18 @@ $LblEcnPubTxt.Text = "Public Key Pasteboard:"
 
 # Add Label to the Form
 $Form.Controls.Add($LblEcnPubTxt)
+
+#Create label for ECDSA
+#Create label for Secure Strings (AES)
+$LblAES = New-Object System.Windows.Forms.Label
+$LblAES.Location = New-Object System.Drawing.Point(20,120)
+$LblAES.Size = New-Object System.Drawing.Size(250, 22) 
+$LblAES.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
+$LblAES.Text = "AES Encryption:"
+
+# Add Label to the Form
+$Form.Controls.Add($LblAES)
+
 
 # Create a textbox to display the encryption key in (PUBLIC ONLY)
 $TbEcnPubTxt = New-Object System.Windows.Forms.TextBox
