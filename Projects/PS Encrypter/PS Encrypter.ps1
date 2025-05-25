@@ -168,6 +168,42 @@ $BtnCrtAES.Add_Click({
 # Add Button to the Form
 $Form.Controls.Add($BtnCrtAES)
 
+#Create label for ECDSA
+$LblECDSA = New-Object System.Windows.Forms.Label
+$LblECDSA.Location = New-Object System.Drawing.Point(300,40)
+$LblECDSA.Size = New-Object System.Drawing.Size(250, 22) 
+$LblECDSA.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
+$LblECDSA.Text = "ECDSA Encryption:"
+
+# Add Label to the Form
+$Form.Controls.Add($LblECDSA)
+
+# Create ECDSA Button
+$BtnCrtPubECDSA = New-Object System.Windows.Forms.Button
+$BtnCrtPubECDSA.Text = "Create Keys"
+$BtnCrtPubECDSA.Size = New-Object System.Drawing.Size(150, 40)
+$BtnCrtPubECDSA.Location = New-Object System.Drawing.Point(300, 70)
+$BtnCrtPubECDSA.Add_Click({
+
+    # Generate ECDSA key
+    $curve = [System.Security.Cryptography.ECCurve]::NamedCurves.nistP256
+    $ecdsa = [System.Security.Cryptography.ECDsa]::Create($curve)
+
+    # Export public key (Base64 format)
+    $publicKeyBytes = $ecdsa.ExportSubjectPublicKeyInfo()
+    $Base64Key = [Convert]::ToBase64String($publicKeyBytes)
+
+    # Save the key using your custom function
+    SaveFunctionality -FileSavePath "ECDSA.txt" -FileSaveType ".txt" -PublicKey $Base64Key -PrivateKey ""
+
+    # Indicate success using your existing feedback method
+    SuccessIndicator -Task "ECDSA"
+
+})
+
+# Add Button to the Form
+$Form.Controls.Add($BtnCrtPubECDSA)
+
 # Create a label for a textbox to display the encryption key in (PUBLIC ONLY)
 $LblEcnPubTxt = New-Object System.Windows.Forms.Label
 $LblEcnPubTxt.Location = New-Object System.Drawing.Point(20,200)
