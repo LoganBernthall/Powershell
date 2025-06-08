@@ -199,10 +199,59 @@ $BtnCrtPubECDSA.Add_Click({
     # Indicate success using your existing feedback method
     SuccessIndicator -Task "ECDSA"
 
+     # Update the global variable and textbox
+    $global:PubVal = $Base64Key
+    $TbEcnPubTxt.Text = $global:PubVal
+
+
 })
 
 # Add Button to the Form
 $Form.Controls.Add($BtnCrtPubECDSA)
+
+#######################################
+#Create label for ECDSA
+$Lbl3DES = New-Object System.Windows.Forms.Label
+$Lbl3DES.Location = New-Object System.Drawing.Point(300,120)
+$Lbl3DES.Size = New-Object System.Drawing.Size(250, 22) 
+$Lbl3DES.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
+$Lbl3DES.Text = "3DES Encryption:"
+
+# Add Label to the Form
+$Form.Controls.Add($Lbl3DES)
+
+# Create 3DES Button
+$BtnCrtPubDES = New-Object System.Windows.Forms.Button
+$BtnCrtPubDES.Text = "Create Keys"
+$BtnCrtPubDES.Size = New-Object System.Drawing.Size(150, 40)
+$BtnCrtPubDES.Location = New-Object System.Drawing.Point(300, 140)
+$BtnCrtPubDES.Add_Click({
+
+  # Generate 3DES key
+    $TripleDES = [System.Security.Cryptography.TripleDESCryptoServiceProvider]::Create()
+    $TripleDES.GenerateKey()
+    $TripleDES.GenerateIV()
+
+    # Combine Key
+    $combinedBytes = $TripleDES.Key + $TripleDES.IV
+    $Base64Key = [Convert]::ToBase64String($combinedBytes)
+
+    # Save the key using your custom function
+    SaveFunctionality -FileSavePath "3DES.txt" -FileSaveType ".txt" -PublicKey $Base64Key -PrivateKey ""
+
+
+    # Indicate success using your existing feedback method
+    SuccessIndicator -Task "3DES"
+
+    # Update the global variable and textbox
+    $global:PubVal = $Base64Key
+    $TbEcnPubTxt.Text = $global:PubVal
+
+})
+
+# Add Button to the Form
+$Form.Controls.Add($BtnCrtPubDES)
+#######################################
 
 # Create a label for a textbox to display the encryption key in (PUBLIC ONLY)
 $LblEcnPubTxt = New-Object System.Windows.Forms.Label
@@ -213,18 +262,6 @@ $LblEcnPubTxt.Text = "Public Key Pasteboard:"
 
 # Add Label to the Form
 $Form.Controls.Add($LblEcnPubTxt)
-
-#Create label for ECDSA
-#Create label for Secure Strings (AES)
-$LblAES = New-Object System.Windows.Forms.Label
-$LblAES.Location = New-Object System.Drawing.Point(20,120)
-$LblAES.Size = New-Object System.Drawing.Size(250, 22) 
-$LblAES.Font = New-Object System.Drawing.Font("Arial", 15, [System.Drawing.FontStyle]::Bold)
-$LblAES.Text = "AES Encryption:"
-
-# Add Label to the Form
-$Form.Controls.Add($LblAES)
-
 
 # Create a textbox to display the encryption key in (PUBLIC ONLY)
 $TbEcnPubTxt = New-Object System.Windows.Forms.TextBox
